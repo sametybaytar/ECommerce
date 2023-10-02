@@ -14,7 +14,7 @@ namespace ECommerceAPI.Application.Repositories
         bool Update(T model);
         bool UpdateRange(List<T> model);
         bool Remove(T model);
-        Task<bool> Remove(string id);
+        Task<bool> RemoveAsync(string id);
         bool RemoveRange(List<T> datas);
 
         Task<int> SaveAsync();

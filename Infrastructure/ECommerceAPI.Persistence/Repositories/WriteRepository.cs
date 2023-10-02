@@ -40,7 +40,7 @@ namespace ECommerceAPI.Persistence.Repositories
             return entityEntry.State == EntityState.Deleted;
         }
 
-        public async Task<bool> Remove(string id)
+        public async Task<bool> RemoveAsync(string id)
         {
           var model =  await Table.FirstOrDefaultAsync(p => p.Id == Guid.Parse(id));
             return Remove(model);

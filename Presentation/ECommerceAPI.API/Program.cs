@@ -4,6 +4,11 @@ using ECommerceAPI.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServices();
+//builder.Services.AddCors(options => options.AddPolicy("AngularClient", builder => builder.WithOrigins("http://localhost:4200/").AllowAnyMethod().AllowAnyHeader()));
+    builder.Services.AddCors(options =>
+       options.AddPolicy("AngularClient", builder =>
+           builder.WithOrigins("https://localhost:4200", "http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -20,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AngularClient");
 app.UseAuthorization();
 
 app.MapControllers();
