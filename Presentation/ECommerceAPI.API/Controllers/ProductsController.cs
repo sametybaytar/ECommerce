@@ -36,6 +36,11 @@ namespace ECommerceAPI.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(VM_Create_Product model)
         {
+            if (ModelState.IsValid)
+            {
+
+            }
+
             Product product = new(){ Name = model.Name, Stock = model.Stock, Price = model.Price };
             await _productWriteRepository.AddAsync(product);
             await _productWriteRepository.SaveAsync();
@@ -43,7 +48,7 @@ namespace ECommerceAPI.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(VM_Product_Update model)
+        public async Task<IActionResult> Update(VM_Update_Product model)
         {
             Product product = await _productReadRepository.GetByIdAsync(model.Id.ToString());
             product.Name = model.Name;

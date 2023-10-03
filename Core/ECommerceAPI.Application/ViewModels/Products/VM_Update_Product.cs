@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerceAPI.Application.ViewModels.Products
 {
-    public class VM_Product_Update
+    public class VM_Update_Product
     {
         public string Id { get; set; }
         public string Name { get; set; }

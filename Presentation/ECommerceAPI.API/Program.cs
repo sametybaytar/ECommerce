@@ -1,5 +1,7 @@
+using ECommerceAPI.Application.Validators.Products;
+using ECommerceAPI.Infrastructure.Filters;
 using ECommerceAPI.Persistence;
-
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,8 @@ builder.Services.AddPersistenceServices();
            builder.WithOrigins("https://localhost:4200", "http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(option => option.Filters.Add<ValidationFilters>())
+    .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>()).ConfigureApiBehaviorOptions(option => option.SuppressModelStateInvalidFilter = true);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
