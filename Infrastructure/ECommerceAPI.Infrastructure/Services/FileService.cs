@@ -92,8 +92,8 @@ namespace ECommerceAPI.Infrastructure.Services
         public async Task<List<(string fileName, string path)>> UpdateAsync(string path, IFormFileCollection files)
         {
             string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, path);
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(uploadPath))
+                Directory.CreateDirectory(uploadPath);
             List<(string fileName, string path)> datas = new();
             List<bool> results = new();
             foreach (IFormFile file in files)

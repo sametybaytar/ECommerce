@@ -18,6 +18,10 @@ namespace ECommerceAPI.Persistence.Contexts
         DbSet<Product> Products { get; set; }
         DbSet<Order> Orders { get; set; }
         DbSet<Customer> Customers { get; set; }
+        DbSet<Domain.Entities.File> Files{ get; set; }
+        DbSet<ProductImageFile> ProductImageFiles{ get; set; }
+        DbSet<InvoiceFile> InvoiceFiles{ get; set; }
+        DbSet<OrderFile> OrderFiles{ get; set; }
 
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

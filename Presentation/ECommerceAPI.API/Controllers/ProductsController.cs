@@ -19,17 +19,41 @@ namespace ECommerceAPI.API.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IProductWriteRepository _productWriteRepository;
         private readonly IFileService _fileService;
+        private readonly IFileReadRepository _fileReadRepository;
+        private readonly IFileWriteRepository _fileWriteRepository;
+        private readonly IProductImageFileReadRepository _productImageFileReadRepository;
+        private readonly IProductImageFileWriteRepository _productImageFileWriteRepository;
+        private readonly IInvoiceFileReadRepository _invoiceFileReadRepository;
+        private readonly IInvoiceFileWriteRepository _invoiceFileWriteRepository;
+        private readonly IOrderFileReadRepository _orderFileReadRepository;
+        private readonly IOrderFileWriteRepository _orderFileWriteRepository;
 
         public ProductsController(
             IProductWriteRepository productWriteRepository,
             IProductReadRepository productReadRepository,
             IWebHostEnvironment webHostEnvironment,
-            IFileService fileService)
+            IFileService fileService,
+            IFileReadRepository fileReadRepository,
+            IFileWriteRepository fileWriteRepository,
+            IProductImageFileReadRepository productImageFileReadRepository,
+            IProductImageFileWriteRepository productImageFileWriteRepository,
+            IInvoiceFileReadRepository invoiceFileReadRepository,
+            IInvoiceFileWriteRepository invoiceFileWriteRepository,
+            IOrderFileReadRepository orderFileReadRepository,
+            IOrderFileWriteRepository orderFileWriteRepository)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
             _webHostEnvironment = webHostEnvironment;
             _fileService = fileService;
+            _fileReadRepository = fileReadRepository;
+            _fileWriteRepository = fileWriteRepository;
+            _productImageFileReadRepository = productImageFileReadRepository;
+            _productImageFileWriteRepository = productImageFileWriteRepository;
+            _invoiceFileReadRepository = invoiceFileReadRepository;
+            _invoiceFileWriteRepository = invoiceFileWriteRepository;
+            _orderFileReadRepository = orderFileReadRepository;
+            _orderFileWriteRepository = orderFileWriteRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] Pagination pagination)
@@ -87,7 +111,44 @@ namespace ECommerceAPI.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Upload()
         {
-            await _fileService.UpdateAsync("resource/products/images", Request.Form.Files);
+           var datas= await _fileService.UpdateAsync("resource/File/files", Request.Form.Files);
+
+            //await _productImageFileWriteRepository.AddRangeAsync(datas.Select(d => new ProductImageFile()
+            //{
+            //    FileName = d.fileName,
+            //    Path = d.path
+            //}).ToList());
+            //await _productImageFileWriteRepository.SaveAsync();
+
+            //await _invoiceFileWriteRepository.AddRangeAsync(datas.Select(d => new InvoiceFile()
+            //{
+            //    FileName = d.fileName,
+            //    Path = d.path,
+            //    Price = 100
+            //}).ToList());
+            //await _invoiceFileWriteRepository.SaveAsync();
+
+            //await _orderFileWriteRepository.AddRangeAsync(datas.Select(d => new OrderFile()
+            //{
+            //    FileName = d.fileName,
+            //    Path = d.path,
+            //    Description= $"Açıklama {d.fileName}"
+            //}).ToList());
+            //await _orderFileWriteRepository.SaveAsync();
+
+            await _fileWriteRepository.AddRangeAsync(datas.Select(d => new ECommerceAPI.Domain.Entities.File()
+            {
+                FileName = d.fileName,
+                Path = d.path
+            }).ToList());
+            await _fileWriteRepository.SaveAsync();
+
+
+            //var d1 = _fileReadRepository.GetAll(false);
+            //var d2 = _invoiceFileReadRepository.GetAll(false);
+            //var d3 = _orderFileReadRepository.GetAll(false);
+            //var d4 = _productImageFileReadRepository.GetAll(false);
+
 
             //string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "resource/products/images");
 
