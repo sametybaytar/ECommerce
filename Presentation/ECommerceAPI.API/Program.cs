@@ -1,6 +1,7 @@
 using ECommerceAPI.Application.Validators.Products;
 using ECommerceAPI.Infrastructure;
 using ECommerceAPI.Infrastructure.Filters;
+using ECommerceAPI.Infrastructure.Services.Storage.Local;
 using ECommerceAPI.Persistence;
 using FluentValidation.AspNetCore;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddStorage<LocalStorage>();
 //builder.Services.AddCors(options => options.AddPolicy("AngularClient", builder => builder.WithOrigins("http://localhost:4200/").AllowAnyMethod().AllowAnyHeader()));
     builder.Services.AddCors(options =>
        options.AddPolicy("AngularClient", builder =>

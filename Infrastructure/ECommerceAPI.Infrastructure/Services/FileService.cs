@@ -1,5 +1,4 @@
 ﻿using ECommerceAPI.Application.Operations;
-using ECommerceAPI.Application.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -11,34 +10,14 @@ using System.Threading.Tasks;
 
 namespace ECommerceAPI.Infrastructure.Services
 {
-    public class FileService : IFileService
+    public class FileService
     {
-        private IWebHostEnvironment _webHostEnvironment;
 
-        public FileService(IWebHostEnvironment webHostEnvironment)
-        {
-            _webHostEnvironment = webHostEnvironment;
-        }
-
-        public async Task<bool> CopyFileAsync(string path, IFormFile file)
-        {
-            try
-            {
-                await using FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 1024 * 1024, useAsync: false);
-                await file.CopyToAsync(fileStream);
-                await fileStream.FlushAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
 
         async Task<string> FileRenameAsync(string path, string fileName, bool first = true)
         {
-            string newFileName = await Task.Run<string>(async () => {
+            string newFileName = await Task.Run<string>(async () =>
+            {
                 string extension = Path.GetExtension(fileName);
                 string newFileName = string.Empty;
                 if (first)
@@ -59,25 +38,25 @@ namespace ECommerceAPI.Infrastructure.Services
                         {
                             lastIndex = indexNo1;
                             indexNo1 = newFileName.IndexOf("-", indexNo1 + 1);
-                            if(indexNo1 == -1)
+                            if (indexNo1 == -1)
                             {
                                 indexNo1 = lastIndex;
                                 break;
                             }
                         }
-                        
-                        
+
+
                         int indexNo2 = newFileName.IndexOf(".");
-                        string fileNo = newFileName.Substring(indexNo1+1, indexNo2 - indexNo1 - 1);
-                        
-                        if(int.TryParse(fileNo, out int _fileNo))
+                        string fileNo = newFileName.Substring(indexNo1 + 1, indexNo2 - indexNo1 - 1);
+
+                        if (int.TryParse(fileNo, out int _fileNo))
                         {
                             _fileNo++;
-                            newFileName = newFileName.Remove(indexNo1+1, indexNo2 - indexNo1 - 1)
-                                                 .Insert(indexNo1+1, _fileNo.ToString());
+                            newFileName = newFileName.Remove(indexNo1 + 1, indexNo2 - indexNo1 - 1)
+                                                 .Insert(indexNo1 + 1, _fileNo.ToString());
                         }
                         else
-                             newFileName = $"{Path.GetFileNameWithoutExtension(newFileName)}-2{extension}";
+                            newFileName = $"{Path.GetFileNameWithoutExtension(newFileName)}-2{extension}";
                     }
                 }
                 if (File.Exists($"{path}\\{newFileName}"))
@@ -86,32 +65,8 @@ namespace ECommerceAPI.Infrastructure.Services
                     return newFileName;
             });
             return newFileName;
-            
-        }
-
-        public async Task<List<(string fileName, string path)>> UpdateAsync(string path, IFormFileCollection files)
-        {
-            string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, path);
-            if (!Directory.Exists(uploadPath))
-                Directory.CreateDirectory(uploadPath);
-            List<(string fileName, string path)> datas = new();
-            List<bool> results = new();
-            foreach (IFormFile file in files)
-            {
-                string fileNewName = await FileRenameAsync(uploadPath, file.FileName);
-                bool result = await CopyFileAsync(Path.Combine(uploadPath, fileNewName), file);
-
-                results.Add(result);
-                datas.Add((fileNewName, Path.Combine(uploadPath, fileNewName)));
-            }
-
-            if (results.TrueForAll(r => r.Equals(true)))
-            {
-                return datas;
-            }
-            return null;
-            //todo Bu kısımda eğer hata oluşursa hata ile ilgili exception oluşturalım
 
         }
+
     }
 }
