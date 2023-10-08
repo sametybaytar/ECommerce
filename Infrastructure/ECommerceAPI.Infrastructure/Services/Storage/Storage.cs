@@ -1,20 +1,16 @@
 ﻿using ECommerceAPI.Application.Operations;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceAPI.Infrastructure.Services
+namespace ECommerceAPI.Infrastructure.Services.Storage
 {
-    public class FileService
+    public class Storage
     {
-
-
-        async Task<string> FileRenameAsync(string path, string fileName, bool first = true)
+        protected delegate bool HasFile(string pathOrContainerName, string fileName);
+        protected async Task<string> FileRenameAsync(string pathOrContainerName, string fileName, HasFile hasFileMethod, bool first = true)
         {
             string newFileName = await Task.Run<string>(async () =>
             {
@@ -59,14 +55,14 @@ namespace ECommerceAPI.Infrastructure.Services
                             newFileName = $"{Path.GetFileNameWithoutExtension(newFileName)}-2{extension}";
                     }
                 }
-                if (File.Exists($"{path}\\{newFileName}"))
-                    return await FileRenameAsync(path, newFileName, false);
+
+                if (hasFileMethod(pathOrContainerName, newFileName))
+                    return await FileRenameAsync(pathOrContainerName, newFileName, hasFileMethod, false);
                 else
                     return newFileName;
             });
             return newFileName;
 
         }
-
     }
 }
