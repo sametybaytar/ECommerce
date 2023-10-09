@@ -10,10 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
-builder.Services.AddStorage<LocalStorage>();
-//builder.Services.AddStorage<AzureStorage>();
+//builder.Services.AddStorage<LocalStorage>();
+builder.Services.AddStorage<AzureStorage>();
 //builder.Services.AddCors(options => options.AddPolicy("AngularClient", builder => builder.WithOrigins("http://localhost:4200/").AllowAnyMethod().AllowAnyHeader()));
-    builder.Services.AddCors(options =>
+builder.Services.AddCors(options =>
        options.AddPolicy("AngularClient", builder =>
            builder.WithOrigins("https://localhost:4200", "http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
 

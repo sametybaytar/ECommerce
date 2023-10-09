@@ -59,7 +59,7 @@ namespace ECommerceAPI.Infrastructure.Services.Storage.Local
 
                 await CopyFileAsync(Path.Combine(uploadPath, newFileName), file);
 
-                datas.Add((newFileName, Path.Combine(uploadPath, newFileName)));
+                datas.Add((newFileName, Path.Combine(path, newFileName)));
             }
 
             return datas;
