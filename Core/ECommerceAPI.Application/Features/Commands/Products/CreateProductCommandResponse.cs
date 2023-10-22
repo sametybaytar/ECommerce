@@ -1,20 +1,19 @@
-﻿using ECommerceAPI.Domain.Entities.Common;
+﻿using ECommerceAPI.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceAPI.Domain.Entities
+namespace ECommerceAPI.Application.Features.Commands.Products
 {
-    public class Product : BaseEntity
+    public class CreateProductCommandResponse
     {
         public string? Name { get; set; }
         public int Stock { get; set; }
         public float Price { get; set; }
 
         public ICollection<Order>? Orders { get; set; }
-        public ICollection<ProductImageFile>? ProductImageFiles  { get; set; }
-
+        public ICollection<Domain.Entities.ProductImageFile>? ProductImageFiles { get; set; }
     }
 }
