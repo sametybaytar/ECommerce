@@ -1,18 +1,10 @@
-﻿using ECommerceAPI.Application.Abstractions.Storage;
-using ECommerceAPI.Application.Features.Commands.ProductImageFile;
+﻿using ECommerceAPI.Application.Features.Commands.ProductImageFile;
 using ECommerceAPI.Application.Features.Commands.Products;
 using ECommerceAPI.Application.Features.Queries.ProductImageFile;
 using ECommerceAPI.Application.Features.Queries.Products;
-using ECommerceAPI.Application.Repositories;
-using ECommerceAPI.Application.ViewModels.Products;
-using ECommerceAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
 
 namespace ECommerceAPI.API.Controllers
 {
@@ -20,51 +12,14 @@ namespace ECommerceAPI.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductReadRepository _productReadRepository;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IProductWriteRepository _productWriteRepository;
-        private readonly IFileReadRepository _fileReadRepository;
-        private readonly IFileWriteRepository _fileWriteRepository;
-        private readonly IProductImageFileReadRepository _productImageFileReadRepository;
-        private readonly IProductImageFileWriteRepository _productImageFileWriteRepository;
-        private readonly IInvoiceFileReadRepository _invoiceFileReadRepository;
-        private readonly IInvoiceFileWriteRepository _invoiceFileWriteRepository;
-        private readonly IOrderFileReadRepository _orderFileReadRepository;
-        private readonly IOrderFileWriteRepository _orderFileWriteRepository;
-        private readonly IStorageService _storageService;
-        private readonly IConfiguration _configuration ;
-
+        
         private readonly IMediator _mediator;
 
         public ProductsController(
-            IProductWriteRepository productWriteRepository,
-            IProductReadRepository productReadRepository,
-            IWebHostEnvironment webHostEnvironment,
-            IFileReadRepository fileReadRepository,
-            IFileWriteRepository fileWriteRepository,
-            IProductImageFileReadRepository productImageFileReadRepository,
-            IProductImageFileWriteRepository productImageFileWriteRepository,
-            IInvoiceFileReadRepository invoiceFileReadRepository,
-            IInvoiceFileWriteRepository invoiceFileWriteRepository,
-            IOrderFileReadRepository orderFileReadRepository,
-            IOrderFileWriteRepository orderFileWriteRepository,
-            IStorageService storageService,
-            IConfiguration configuration,
+            
             IMediator mediator)
         {
-            _productWriteRepository = productWriteRepository;
-            _productReadRepository = productReadRepository;
-            _webHostEnvironment = webHostEnvironment;
-            _fileReadRepository = fileReadRepository;
-            _fileWriteRepository = fileWriteRepository;
-            _productImageFileReadRepository = productImageFileReadRepository;
-            _productImageFileWriteRepository = productImageFileWriteRepository;
-            _invoiceFileReadRepository = invoiceFileReadRepository;
-            _invoiceFileWriteRepository = invoiceFileWriteRepository;
-            _orderFileReadRepository = orderFileReadRepository;
-            _orderFileWriteRepository = orderFileWriteRepository;
-            _storageService = storageService;
-            _configuration = configuration;
+            
             _mediator = mediator;
         }
         [HttpGet]
